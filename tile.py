@@ -25,8 +25,8 @@ class Tile:
         # self.visited = False
         self.cols = cols
         self.rows = rows
-        self.w = w
-        self.h = h
+        self.w = w // cols
+        self.h = h // cols
 
     def show(self, win, state):
         self.state = state
