@@ -1,4 +1,18 @@
 import pygame
+from enum import Enum
+
+
+class TileState(Enum):
+    START = (0, 255, 200)
+    END = (0, 120, 255)
+    EMPTY = (44, 62, 80)
+    BLOCK = (0, 0, 0)
+    VISITED = (39, 174, 96)
+    VISITING = (39, 174, 96)
+    PATH = (192, 57, 43)
+
+    def __init__(self, color):
+        self.color = color
 
 
 class Tile:
@@ -6,21 +20,17 @@ class Tile:
         self.x, self.y = i, j
         self.neighbors = []
         self.prev = None
-        self.state = None
-        self.wall = False
-        self.visited = False
+        self.state = TileState.EMPTY
+        # self.wall = False
+        # self.visited = False
         self.cols = cols
         self.rows = rows
         self.w = w
         self.h = h
 
-    def show(self, win, col, shape=1):
-        if self.wall == True:
-            col = (0, 0, 0)
-        if shape == 1:
-            pygame.draw.rect(win, col, (self.x * self.w, self.y * self.h, self.w - 1, self.h - 1))
-        else:
-            pygame.draw.circle(win, col, (self.x * self.w + self.w // 2, self.y * self.h + self.h // 2), self.w // 3)
+    def show(self, win, state):
+        self.state = state
+        pygame.draw.rect(win, self.state.color, (self.x * self.w, self.y * self.h, self.w - 1, self.h - 1))
 
     def add_neighbors(self, grid):
         if self.x < self.cols - 1:
