@@ -27,6 +27,13 @@ def main():
     pygame.init()
     root = pygame.display.set_mode(size=(WIDTH, HEIGHT))
 
+    while True:
+        for event in pygame.event.get():
+            #for closing with x button top right
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            
 
 if __name__ == "__main__":
     main()
