@@ -21,6 +21,13 @@ import math
 from collections import deque
 
 WIDTH, HEIGHT = 640, 480
+COLS, ROWS = 64, 48
+TILE_WIDTH = WIDTH // COLS
+TILE_HEIGHT = HEIGHT // ROWS
+
+grid = []
+queue, visited = deque(), []
+path = []
 
 
 def main():
@@ -29,11 +36,11 @@ def main():
 
     while True:
         for event in pygame.event.get():
-            #for closing with x button top right
+            # for closing with x button top right
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            
+
 
 if __name__ == "__main__":
     main()
