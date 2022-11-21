@@ -41,3 +41,11 @@ class Tile:
             self.neighbors.append(grid[self.x][self.y + 1])
         if self.y > 0:
             self.neighbors.append(grid[self.x][self.y - 1])
+        if self.x < self.cols - 1 and self.y < self.rows - 1:
+            self.neighbors.append(grid[self.x + 1][self.y + 1])
+        if self.x < self.cols - 1 and self.y > 0:
+            self.neighbors.append(grid[self.x + 1][self.y - 1])
+        if self.x > 0 and self.y < self.rows - 1:
+            self.neighbors.append(grid[self.x - 1][self.y + 1])
+        if self.x > 0 and self.y > 0:
+            self.neighbors.append(grid[self.x - 1][self.y - 1])
