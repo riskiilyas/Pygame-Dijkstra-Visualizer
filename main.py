@@ -43,11 +43,6 @@ grid = []
 queue, visited = deque(), []
 path = []
 
-# def place(pos):
-#     i = pos[0] // TILE_WIDTH
-#     j = pos[1] // TILE_HEIGHT
-#     return TILE_WIDTH, TILE_HEIGHT
-
 
 for i in range(COLS):
     arr = []
@@ -80,7 +75,6 @@ def clickWall(pos, non_erase_mode, click_mode):
     elif click_mode == ModeState.MODE_FINISH:
         grid[i][j].state = TileState.END
 
-
 def main():
     pygame.init()
     root = pygame.display.set_mode(size=(WIDTH, HEIGHT))
@@ -102,6 +96,9 @@ def main():
             elif event.type == pygame.MOUSEMOTION:
                 if event.buttons[0] or event.buttons[2]:
                     clickWall(mouse, event.buttons[0], click_mode)
+            elif event.type == pygame.MOUSEMOTION:
+                if event.buttons[0] or event.buttons[2]:
+                    clickWall(mouse, event.buttons[0])
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     startflag = True
