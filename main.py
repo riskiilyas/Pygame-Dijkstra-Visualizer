@@ -33,6 +33,11 @@ grid = []
 queue, visited = deque(), []
 path = []
 
+def clickWall(position, state):
+    i = position[0] // TILE_WIDTH
+    j = position[1] // TILE_HEIGHT
+    grid[i][j].wall = state
+
 
 def main():
     pygame.init()
@@ -44,15 +49,17 @@ def main():
 
     while True:
         for event in pygame.event.get():
+            mouse = pygame.mouse.get_pos()
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button in (1, 3):
-                    pass  # clickWall(pygame.mouse.get_pos(), event.button==1)
+                    clickWall(mouse, event.button==1)
             elif event.type == pygame.MOUSEMOTION:
                 if event.buttons[0] or event.buttons[2]:
-                    pass  # clickWall(pygame.mouse.get_pos(), event.buttons[0])
+                    clickWall(mouse, event.buttons[0])
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     startflag = True
