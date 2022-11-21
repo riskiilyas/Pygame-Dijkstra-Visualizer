@@ -23,11 +23,11 @@ class Tile:
         self.prev = None
         self.state = TileState.EMPTY
         # self.wall = False
-        # self.visited = False
+        self.visited = False
         self.cols = cols
         self.rows = rows
-        self.w = w // cols
-        self.h = h // cols
+        self.w = w
+        self.h = h
 
     def show(self, window, state):
         self.state = state
