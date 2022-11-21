@@ -19,11 +19,15 @@ import random
 import math
 
 from collections import deque
+from tkinter import messagebox, Tk
 
-WIDTH, HEIGHT = 640, 480
+SIZE = (WIDTH, HEIGHT) = 640, 480
 COLS, ROWS = 64, 48
 TILE_WIDTH = WIDTH // COLS
 TILE_HEIGHT = HEIGHT // ROWS
+
+window = pygame.display.set_mode(SIZE)
+pygame.display.set_caption("Dijkstra's Path Finding")
 
 grid = []
 queue, visited = deque(), []
