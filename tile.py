@@ -3,16 +3,17 @@ from enum import Enum
 
 
 class TileState(Enum):
-    START = (0, 255, 200)
-    END = (0, 120, 255)
-    EMPTY = (44, 62, 80)
-    BLOCK = (0, 0, 0)
-    VISITED = (39, 174, 96)
-    VISITING = (39, 174, 96)
-    PATH = (192, 57, 43)
+    START = ((252, 101, 137), (185, 35, 71))
+    END = ((43, 204, 255), (16, 153, 197))
+    EMPTY = ((248, 248, 248), (226, 226, 226))
+    BLOCK = ((122, 122, 122), (102, 102, 102))
+    VISITED = ((142, 204, 93), (87, 165, 25))
+    VISITING = ((192, 239, 155), (142, 204, 93))
+    PATH = ((255, 195, 104), (205, 142, 48))
 
-    def __init__(self, color):
-        self.color = color
+    def __init__(self, fill, border):
+        self.fill = fill
+        self.border = border
 
 
 class Tile:
@@ -28,9 +29,9 @@ class Tile:
         self.w = w // cols
         self.h = h // cols
 
-    def show(self, win, state):
+    def show(self, window, state):
         self.state = state
-        pygame.draw.rect(win, self.state.color, (self.x * self.w, self.y * self.h, self.w - 1, self.h - 1))
+        pygame.draw.rect(window, self.state.color, (self.x * self.w, self.y * self.h, self.w - 1, self.h - 1))
 
     def add_neighbors(self, grid):
         if self.x < self.cols - 1:
