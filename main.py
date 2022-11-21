@@ -37,13 +37,25 @@ path = []
 def main():
     pygame.init()
     root = pygame.display.set_mode(size=(WIDTH, HEIGHT))
+    
+    flag = False
+    noflag = True
+    startflag = False
 
     while True:
         for event in pygame.event.get():
-            # for closing with x button top right
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button in (1, 3):
+                    pass  # clickWall(pygame.mouse.get_pos(), event.button==1)
+            elif event.type == pygame.MOUSEMOTION:
+                if event.buttons[0] or event.buttons[2]:
+                    pass  # clickWall(pygame.mouse.get_pos(), event.buttons[0])
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    startflag = True
 
 
 if __name__ == "__main__":
