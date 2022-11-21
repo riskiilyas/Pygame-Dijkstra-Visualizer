@@ -20,7 +20,19 @@ $ git clone https://github.com/riskiilyas/DAA-Dijkstra-Visualizer
 $ cd DAA-Dijkstra-Visualizer
 $ pip3 install -r requirements.txt
 $ python3 main.py
-
 ```
 
 If everything done successfully, the program window will open
+
+## Usage
+
+- There are 3 modes when inserting a new tile, starting, finish, and wall tile
+  there can only be one starting and finish tile in the map.
+    - Press `1` to insert the starting tile
+    - Press `2` to insert the finish tile
+    - Press `3` to insert wall
+  After pressing the key, you can click anywhere in the map to insert the corresponding tile
+
+- To start the pathfinding process, press `Enter` key
+- To stop the process, press `q`
+- To restart pathfinding, press `r`
