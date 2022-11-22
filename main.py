@@ -13,15 +13,13 @@ Group Member
 
 """
 
-import pygame
 import sys
+import pygame
+
 from enum import Enum
-
 from collections import deque
-from tkinter import messagebox, Tk
-
 from tile import Tile, TileState
-
+from utils import hex_to_rgb
 
 class ModeState(Enum):
     MODE_BLOCK = 1
@@ -34,18 +32,21 @@ COLS, ROWS = 64, 48
 TILE_WIDTH = WIDTH // COLS
 TILE_HEIGHT = HEIGHT // ROWS
 
-window = pygame.display.set_mode(SIZE)
+window = pygame.display.set_mode((WIDTH, HEIGHT + 40))
 pygame.display.set_caption("Dijkstra's Path Finding")
+
+pygame.init()
+font = pygame.font.Font("Pixeltype.ttf", 40)
 
 grid = []
 queue, visited = deque(), []
 path = []
 start = None
 end = None
-
+mode = "WALL"
+status = "READY"
 
 def init_scenario():
-    print('ahlloo')
     global grid, queue, visited, path, start, end
     grid = []
     queue, visited = deque(), []
@@ -61,8 +62,8 @@ def init_scenario():
         for j in range(ROWS):
             grid[i][j].add_neighbors(grid)
 
-    start = grid[0][0]
-    end = grid[COLS - COLS // 2][ROWS - COLS // 4]
+    start = grid[COLS // 4][ROWS // 2]
+    end = grid[COLS - COLS // 4][ROWS // 2]
     start.visited = False
     end.visited = False
     queue.append(start)
@@ -71,12 +72,25 @@ def init_scenario():
 def click_wall(pos, non_erase_mode, click_mode):
     i = pos[0] // TILE_WIDTH
     j = pos[1] // TILE_HEIGHT
-    global start
-    global end
+    global start, end
     if not non_erase_mode:
-        grid[i][j].show(window, TileState.EMPTY)
+        if i >= 0 and j >= 0 and i < COLS and j < ROWS:
+            grid[i][j].show(window, TileState.EMPTY)
+            if i + 1 < COLS:
+                grid[i + 1][j].show(window, TileState.EMPTY)
+            if j + 1 < ROWS:
+                grid[i][j + 1].show(window, TileState.EMPTY)
+            if i + 1 < COLS and j + 1 < ROWS:
+                grid[i + 1][j + 1].show(window, TileState.EMPTY)
     elif click_mode == ModeState.MODE_BLOCK:
-        grid[i][j].show(window, TileState.BLOCK)
+        if i >= 0 and j >= 0 and i < COLS and j < ROWS:
+            grid[i][j].show(window, TileState.BLOCK)
+            if i + 1 < COLS:
+                grid[i + 1][j].show(window, TileState.BLOCK)
+            if j + 1 < ROWS:
+                grid[i][j + 1].show(window, TileState.BLOCK)
+            if i + 1 < COLS and j + 1 < ROWS:
+                grid[i + 1][j + 1].show(window, TileState.BLOCK)
     elif click_mode == ModeState.MODE_START:
         start.show(window, TileState.EMPTY)
         start = grid[i][j]
@@ -90,14 +104,12 @@ def click_wall(pos, non_erase_mode, click_mode):
 
 
 def main():
-    pygame.init()
-    root = pygame.display.set_mode(size=(WIDTH, HEIGHT))
-
     flag = False
     noflag = True
     startflag = False
     finished = False
     click_mode = ModeState.MODE_BLOCK
+    global mode, status
 
     init_scenario()
     while True:
@@ -115,6 +127,7 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     if finished:
+                        status = "READY"
                         finished = False
                         startflag = False
                         flag = False
@@ -124,10 +137,13 @@ def main():
                         startflag = True
                 elif event.key == pygame.K_1:
                     click_mode = ModeState.MODE_START
+                    mode = "START"
                 elif event.key == pygame.K_2:
                     click_mode = ModeState.MODE_FINISH
+                    mode = "FINISH"
                 elif event.key == pygame.K_3:
                     click_mode = ModeState.MODE_BLOCK
+                    mode = "WALL"
 
         if startflag:
             start.visited = True
@@ -140,10 +156,11 @@ def main():
                         temp = temp.prev
                     if not flag:
                         flag = True
-                        print("Done")
+                        status = "FOUND :DD"
                     finished = True
 
                 if not flag:
+                    status = "WALKING..."
                     for i in current.neighbors:
                         if not i.visited and not i.state == TileState.BLOCK:
                             i.visited = True
@@ -151,12 +168,17 @@ def main():
                             queue.append(i)
             else:
                 if noflag and not flag:
-                    Tk().wm_withdraw()
-                    messagebox.showinfo("No Solution", "There was no solution")
                     noflag = False
+                    status = "NO PATH FOUND :("
                 finished = True
 
-        window.fill((255, 255, 255))
+        window.fill(hex_to_rgb("#2B213A"))
+
+        mode_label = font.render("MODE: " + mode, False, hex_to_rgb("#F8EEE3"))
+        status_label = font.render(status, False, hex_to_rgb("#F8EEE3"))
+
+        window.blit(mode_label, (10, 490))
+        window.blit(status_label, (400, 490))
         for i in range(COLS):
             for j in range(ROWS):
                 spot = grid[i][j]
