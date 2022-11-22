@@ -31,7 +31,9 @@ class Tile:
 
     def show(self, window, state):
         self.state = state
-        pygame.draw.rect(window, self.state.color, (self.x * self.w, self.y * self.h, self.w - 1, self.h - 1))
+
+        pygame.draw.rect(window, self.state.fill, (self.x * self.w, self.y * self.h, self.w, self.h))
+        pygame.draw.rect(window, self.state.border, (self.x * self.w, self.y * self.h, self.w, self.h), 1)
 
     def add_neighbors(self, grid):
         if self.x < self.cols - 1:
