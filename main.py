@@ -15,8 +15,6 @@ Group Member
 
 import pygame
 import sys
-import random
-import math
 from enum import Enum
 
 from collections import deque
@@ -42,40 +40,53 @@ pygame.display.set_caption("Dijkstra's Path Finding")
 grid = []
 queue, visited = deque(), []
 path = []
-
-for i in range(COLS):
-    arr = []
-    for j in range(ROWS):
-        arr.append(Tile(i, j, TILE_WIDTH, TILE_HEIGHT, COLS, ROWS))
-    grid.append(arr)
-
-for i in range(COLS):
-    for j in range(ROWS):
-        grid[i][j].add_neighbors(grid)
-
-start = grid[0][0]
-end = grid[COLS - COLS // 2][ROWS - COLS // 4]
-start.wall = False
-end.wall = False
-
-queue.append(start)
-start.visited = True
+start = None
+end = None
 
 
-def clickWall(pos, non_erase_mode, click_mode):
+def init_scenario():
+    print('ahlloo')
+    global grid, queue, visited, path, start, end
+    grid = []
+    queue, visited = deque(), []
+    path = []
+
+    for i in range(COLS):
+        arr = []
+        for j in range(ROWS):
+            arr.append(Tile(i, j, TILE_WIDTH, TILE_HEIGHT, COLS, ROWS))
+        grid.append(arr)
+
+    for i in range(COLS):
+        for j in range(ROWS):
+            grid[i][j].add_neighbors(grid)
+
+    start = grid[0][0]
+    end = grid[COLS - COLS // 2][ROWS - COLS // 4]
+    start.visited = False
+    end.visited = False
+    queue.append(start)
+
+
+def click_wall(pos, non_erase_mode, click_mode):
     i = pos[0] // TILE_WIDTH
     j = pos[1] // TILE_HEIGHT
-    print(non_erase_mode)
-    print(click_mode)
+    global start
+    global end
     if not non_erase_mode:
         grid[i][j].show(window, TileState.EMPTY)
     elif click_mode == ModeState.MODE_BLOCK:
-        print('yess')
         grid[i][j].show(window, TileState.BLOCK)
     elif click_mode == ModeState.MODE_START:
-        grid[i][j].show(window, TileState.START)
+        start.show(window, TileState.EMPTY)
+        start = grid[i][j]
+        queue.clear()
+        queue.append(start)
+        start.show(window, TileState.START)
     elif click_mode == ModeState.MODE_FINISH:
-        grid[i][j].show(window, TileState.END)
+        end.show(window, TileState.EMPTY)
+        end = grid[i][j]
+        end.show(window, TileState.END)
 
 
 def main():
@@ -85,8 +96,10 @@ def main():
     flag = False
     noflag = True
     startflag = False
+    finished = False
     click_mode = ModeState.MODE_BLOCK
 
+    init_scenario()
     while True:
         for event in pygame.event.get():
             mouse = pygame.mouse.get_pos()
@@ -95,13 +108,20 @@ def main():
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button in (1, 3):
-                    clickWall(mouse, event.button == 1, click_mode)
+                    click_wall(mouse, event.button == 1, click_mode)
             elif event.type == pygame.MOUSEMOTION:
                 if event.buttons[0] or event.buttons[2]:
-                    clickWall(mouse, event.buttons[0], click_mode)
+                    click_wall(mouse, event.buttons[0], click_mode)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    startflag = True
+                    if finished:
+                        finished = False
+                        startflag = False
+                        flag = False
+                        noflag = True
+                        init_scenario()
+                    else:
+                        startflag = True
                 elif event.key == pygame.K_1:
                     click_mode = ModeState.MODE_START
                 elif event.key == pygame.K_2:
@@ -110,6 +130,7 @@ def main():
                     click_mode = ModeState.MODE_BLOCK
 
         if startflag:
+            start.visited = True
             if len(queue) > 0:
                 current = queue.popleft()
                 if current == end:
@@ -120,8 +141,8 @@ def main():
                     if not flag:
                         flag = True
                         print("Done")
-                    elif flag:
-                        continue
+                    finished = True
+
                 if not flag:
                     for i in current.neighbors:
                         if not i.visited and not i.state == TileState.BLOCK:
@@ -133,31 +154,23 @@ def main():
                     Tk().wm_withdraw()
                     messagebox.showinfo("No Solution", "There was no solution")
                     noflag = False
-                else:
-                    continue
+                finished = True
 
-        window.fill((0, 20, 20))
+        window.fill((255, 255, 255))
         for i in range(COLS):
             for j in range(ROWS):
                 spot = grid[i][j]
                 spot.show(window)
                 if spot in path:
                     spot.show(window, TileState.PATH)
-                    # spot.show(window, (46, 204, 113))
-                    # spot.show(window, (192, 57, 43), 0)
                 elif spot.visited:
                     spot.show(window, TileState.VISITED)
-                    # spot.show(window, (39, 174, 96))
                 if spot in queue and not flag:
                     spot.show(window, TileState.VISITING)
-                    # spot.show(window, (44, 62, 80))
-                    # spot.show(window, (39, 174, 96), 0)
                 if spot == start:
                     spot.show(window, TileState.START)
-                    # spot.show(window, (0, 255, 200))
                 if spot == end:
                     spot.show(window, TileState.END)
-                    # spot.show(window, (0, 120, 255))
 
         pygame.display.flip()
 

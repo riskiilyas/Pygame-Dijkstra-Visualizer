@@ -32,17 +32,8 @@ class Tile:
     def show(self, window, state=None):
         if state is not None:
             self.state = state
-        """
-        types(by probably if statements):
-        WALL
-        EMPTY
-        VISITING
-        """
-        #inside if
-        # draw inner rectangle
-        print(self.state.fill)
-        pygame.draw.rect(window, self.state.fill, (self.x * self.w, self.y * self.h, self.w - 1, self.h - 1))
-        # draw border
+        pygame.draw.rect(window, self.state.fill, (self.x * self.w, self.y * self.h, self.w, self.h))
+        pygame.draw.rect(window, self.state.border, (self.x * self.w, self.y * self.h, self.w, self.h), 1)
 
     def add_neighbors(self, grid):
         if self.x < self.cols - 1:
