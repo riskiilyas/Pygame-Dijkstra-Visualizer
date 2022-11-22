@@ -43,7 +43,6 @@ grid = []
 queue, visited = deque(), []
 path = []
 
-
 for i in range(COLS):
     arr = []
     for j in range(ROWS):
@@ -66,14 +65,18 @@ start.visited = True
 def clickWall(pos, non_erase_mode, click_mode):
     i = pos[0] // TILE_WIDTH
     j = pos[1] // TILE_HEIGHT
+    print(non_erase_mode)
+    print(click_mode)
     if not non_erase_mode:
-        grid[i][j].state = TileState.EMPTY
+        grid[i][j].show(window, TileState.EMPTY)
     elif click_mode == ModeState.MODE_BLOCK:
-        grid[i][j].state = TileState.BLOCK
+        print('yess')
+        grid[i][j].show(window, TileState.BLOCK)
     elif click_mode == ModeState.MODE_START:
-        grid[i][j].state = TileState.START
+        grid[i][j].show(window, TileState.START)
     elif click_mode == ModeState.MODE_FINISH:
-        grid[i][j].state = TileState.END
+        grid[i][j].show(window, TileState.END)
+
 
 def main():
     pygame.init()
@@ -96,9 +99,6 @@ def main():
             elif event.type == pygame.MOUSEMOTION:
                 if event.buttons[0] or event.buttons[2]:
                     clickWall(mouse, event.buttons[0], click_mode)
-            elif event.type == pygame.MOUSEMOTION:
-                if event.buttons[0] or event.buttons[2]:
-                    clickWall(mouse, event.buttons[0])
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     startflag = True
@@ -124,7 +124,7 @@ def main():
                         continue
                 if not flag:
                     for i in current.neighbors:
-                        if not i.visited and not i.wall:
+                        if not i.visited and not i.state == TileState.BLOCK:
                             i.visited = True
                             i.prev = current
                             queue.append(i)
@@ -140,19 +140,24 @@ def main():
         for i in range(COLS):
             for j in range(ROWS):
                 spot = grid[i][j]
-                spot.show(window, (44, 62, 80))
+                spot.show(window)
                 if spot in path:
-                    spot.show(window, (46, 204, 113))
-                    spot.show(window, (192, 57, 43), 0)
+                    spot.show(window, TileState.PATH)
+                    # spot.show(window, (46, 204, 113))
+                    # spot.show(window, (192, 57, 43), 0)
                 elif spot.visited:
-                    spot.show(window, (39, 174, 96))
+                    spot.show(window, TileState.VISITED)
+                    # spot.show(window, (39, 174, 96))
                 if spot in queue and not flag:
-                    spot.show(window, (44, 62, 80))
-                    spot.show(window, (39, 174, 96), 0)
+                    spot.show(window, TileState.VISITING)
+                    # spot.show(window, (44, 62, 80))
+                    # spot.show(window, (39, 174, 96), 0)
                 if spot == start:
-                    spot.show(window, (0, 255, 200))
+                    spot.show(window, TileState.START)
+                    # spot.show(window, (0, 255, 200))
                 if spot == end:
-                    spot.show(window, (0, 120, 255))
+                    spot.show(window, TileState.END)
+                    # spot.show(window, (0, 120, 255))
 
         pygame.display.flip()
 
