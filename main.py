@@ -156,7 +156,7 @@ def main():
                         temp = temp.prev
                     if not flag:
                         flag = True
-                        status = "FOUND :DD"
+                        status = "FOUND :D"
                     finished = True
 
                 if not flag:
@@ -172,10 +172,10 @@ def main():
                     status = "NO PATH FOUND :("
                 finished = True
 
-        window.fill(hex_to_rgb("#2B213A"))
+        window.fill(hex_to_rgb("#ffffff"))
 
-        mode_label = font.render("MODE: " + mode, False, hex_to_rgb("#F8EEE3"))
-        status_label = font.render(status, False, hex_to_rgb("#F8EEE3"))
+        mode_label = font.render("MODE: " + mode, False, hex_to_rgb("#000000"))
+        status_label = font.render(status, False, hex_to_rgb("#000000"))
 
         window.blit(mode_label, (10, 490))
         window.blit(status_label, (400, 490))
