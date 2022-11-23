@@ -2,9 +2,8 @@
 
 ## About
 
-This repository contains the code of the shortest path
-algorithm visualizer written in Python for the Quiz 2 of
-Design & Analysis of Algorithm IUP Class of 2022
+_Quiz 2 project for Design & Analysis Algorithm IUP 2022 where
+we made a shortest path finder in a maze using Djikstra's algorithm_
 
 **Group Members**
 
@@ -37,5 +36,4 @@ If everything done successfully, the program window will open
   After pressing the key, you can click anywhere in the map to insert the corresponding tile
 
 - To start the pathfinding process, press `Enter` key
-- To stop the process, press `q`
-- To restart pathfinding, press `r`
+- After the process is done, you can cleanup the screen by pressing `Enter` again
