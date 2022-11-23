@@ -13,7 +13,7 @@ Group Member
 
 """
 
-import sys, time
+import sys
 import pygame
 
 from enum import Enum
@@ -130,7 +130,7 @@ def main():
     finished = False
     end_path = deque()
     click_mode = ModeState.MODE_WALL
-    global tile_insert_mode, status
+    global tile_insert_mode, status, start_tile, finish_tile
 
     init_scenario()
     while True:
@@ -211,7 +211,6 @@ def main():
                         queue.clear()
                         queue.append(start_tile)
                         start_tile.show(window, TileState.START)
-
 
                 elif click_mode == ModeState.MODE_FINISH and startflag is False:
                     if event.key == pygame.K_UP:
