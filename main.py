@@ -94,15 +94,17 @@ def click_wall(pos, non_erase_mode, click_mode):
             if i + 1 < COLS and j + 1 < ROWS:
                 grid[i + 1][j + 1].show(window, TileState.BLOCK)
     elif click_mode == ModeState.MODE_START:
-        start.show(window, TileState.EMPTY)
-        start = grid[i][j]
-        queue.clear()
-        queue.append(start)
-        start.show(window, TileState.START)
+        if i >= 0 and j >= 0 and i < COLS and j < ROWS:
+            start.show(window, TileState.EMPTY)
+            start = grid[i][j]
+            queue.clear()
+            queue.append(start)
+            start.show(window, TileState.START)
     elif click_mode == ModeState.MODE_FINISH:
-        end.show(window, TileState.EMPTY)
-        end = grid[i][j]
-        end.show(window, TileState.END)
+        if i >= 0 and j >= 0 and i < COLS and j < ROWS:
+            end.show(window, TileState.EMPTY)
+            end = grid[i][j]
+            end.show(window, TileState.END)
 
 
 def main():
@@ -160,7 +162,8 @@ def main():
                         temp = temp.prev
                     if not flag:
                         flag = True
-                        status = "FOUND " + str(len(path)) + " STEPS"
+                        steps = len(path)
+                        status = "FOUND IN " + str(steps) + " STEPS"
                     finished = True
 
                 if not flag:
@@ -179,7 +182,7 @@ def main():
         window.fill(hex_to_rgb("#ffffff"))
 
         if finished:
-            mode_label = font.render("Press Enter to Restart", False, hex_to_rgb("#000000"))
+            mode_label = font.render("PRESS ENTER TO RESTART", False, hex_to_rgb("#000000"))
         else:
             mode_label = font.render("MODE: " + mode, False, hex_to_rgb("#000000"))
         status_label = font.render(status, False, hex_to_rgb("#000000"))
