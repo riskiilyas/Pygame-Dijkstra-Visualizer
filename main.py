@@ -59,7 +59,7 @@ def reset_visited_path():
         for j in range(ROWS):
             tile = grid[i][j]
             tile.visited = False
-            if tile.state in (TileState.VISITED, TileState.PATH):
+            if tile.state in (TileState.VISITED, TileState.VISITING, TileState.PATH):
                 tile.state = TileState.EMPTY
 
 def init_scenario():
@@ -154,7 +154,13 @@ def main():
                         end_path = deque()
                         reset_visited_path()
                     else:
-                        startflag = True
+                        if not startflag:
+                            status = "EXPLORING MAPS..."
+                            startflag = True
+                        else:
+                            status = "READY"
+                            startflag = False
+                            reset_visited_path()
                 elif event.key == pygame.K_r:
                     if not startflag:
                         init_scenario()
@@ -184,7 +190,6 @@ def main():
                     finished = True
 
                 if not flag:
-                    status = "WALKING..."
                     for i in current.neighbors:
                         if not i.visited and not i.state == TileState.BLOCK:
                             i.visited = True
@@ -205,7 +210,7 @@ def main():
         status_label = font.render(status, False, hex_to_rgb("#000000"))
 
         window.blit(mode_label, (10, 490))
-        window.blit(status_label, (400, 490))
+        window.blit(status_label, (380, 490))
         for i in range(COLS):
             for j in range(ROWS):
                 spot = grid[i][j]
