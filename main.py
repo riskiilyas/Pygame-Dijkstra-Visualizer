@@ -21,6 +21,7 @@ from collections import deque
 from tile import Tile, TileState
 from utils import hex_to_rgb
 
+
 class ModeState(Enum):
     MODE_BLOCK = 1
     MODE_START = 2
@@ -45,6 +46,7 @@ start = None
 end = None
 mode = "WALL"
 status = "READY"
+
 
 def init_scenario():
     global grid, queue, visited, path, start, end
@@ -108,6 +110,7 @@ def main():
     noflag = True
     startflag = False
     finished = False
+    end_path = deque()
     click_mode = ModeState.MODE_BLOCK
     global mode, status
 
@@ -132,6 +135,7 @@ def main():
                         startflag = False
                         flag = False
                         noflag = True
+                        end_path = deque()
                         init_scenario()
                     else:
                         startflag = True
@@ -186,9 +190,7 @@ def main():
             for j in range(ROWS):
                 spot = grid[i][j]
                 spot.show(window)
-                if spot in path:
-                    spot.show(window, TileState.PATH)
-                elif spot.visited:
+                if spot.visited:
                     spot.show(window, TileState.VISITED)
                 if spot in queue and not flag:
                     spot.show(window, TileState.VISITING)
@@ -196,6 +198,14 @@ def main():
                     spot.show(window, TileState.START)
                 if spot == end:
                     spot.show(window, TileState.END)
+
+        if finished:
+            if len(path) > 0:
+                end_path.append(path.pop())
+
+            for i in end_path:
+                if i.state != TileState.START:
+                    i.show(window, TileState.PATH)
 
         pygame.display.flip()
 
