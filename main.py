@@ -13,7 +13,7 @@ Group Member
 
 """
 
-import sys
+import sys, time
 import pygame
 
 from enum import Enum
@@ -47,6 +47,20 @@ end = None
 mode = "WALL"
 status = "READY"
 
+def reset_visited_path():
+    global grid, start, queue, visited, path
+    queue = deque()
+    visited = []
+    path = []
+
+    queue.append(start)
+
+    for i in range(COLS):
+        for j in range(ROWS):
+            tile = grid[i][j]
+            tile.visited = False
+            if tile.state in (TileState.VISITED, TileState.PATH):
+                tile.state = TileState.EMPTY
 
 def init_scenario():
     global grid, queue, visited, path, start, end
@@ -138,9 +152,12 @@ def main():
                         flag = False
                         noflag = True
                         end_path = deque()
-                        init_scenario()
+                        reset_visited_path()
                     else:
                         startflag = True
+                elif event.key == pygame.K_r:
+                    if not startflag:
+                        init_scenario()
                 elif event.key == pygame.K_1:
                     click_mode = ModeState.MODE_START
                     mode = "START"
