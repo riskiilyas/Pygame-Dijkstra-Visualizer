@@ -174,7 +174,7 @@ def main():
                     click_mode = ModeState.MODE_WALL
                     tile_insert_mode = "WALL"
 
-                if click_mode == ModeState.MODE_START:
+                if click_mode == ModeState.MODE_START and startflag is False:
                     if event.key == pygame.K_UP:
                         global start_tile
                         start_tile.show(window, TileState.EMPTY)
@@ -211,7 +211,7 @@ def main():
                         start_tile.show(window, TileState.START)
 
 
-                elif click_mode == ModeState.MODE_FINISH:
+                elif click_mode == ModeState.MODE_FINISH and startflag is False:
                     if event.key == pygame.K_UP:
                         global finish_tile
                         finish_tile.show(window, TileState.EMPTY)
