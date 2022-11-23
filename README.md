@@ -15,13 +15,16 @@ we made a shortest path finder in a maze using Djikstra's algorithm_
 
 ## Installation
 
-In order to install this, you would first require python (≥ 3.10).
-After python has been installed, run the following commands
+Requirements:
+
+- Python (≥ 3.10)
+- pygame (≥ 2.1.2, can be installed via pip: `pip3 install pygame`)
+
+After all requirements are satisfied, you can run the following commands
 
 ```
 $ git clone https://github.com/riskiilyas/DAA-Dijkstra-Visualizer
 $ cd DAA-Dijkstra-Visualizer
-$ pip3 install -r requirements.txt
 $ python3 main.py
 ```
 
@@ -39,7 +42,8 @@ If everything done successfully, the program window will open
     - Press `3` to insert wall
 
   After pressing the key, you can left-click anywhere in the map to insert a new tile
-  and right-click to remove tile
+  and right-click to remove tile. You can also use the arrow keys to move
+  the starting and finish tile around.
 
 - To start the pathfinding process, press `Enter` key
 - After the pathfinding process is done, press `Enter` again
