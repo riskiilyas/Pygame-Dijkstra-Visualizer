@@ -32,7 +32,8 @@ If everything done successfully, the program window will open
 ![usage-demo](./readme_assets/usage_demo.gif)
 
 - There are 3 modes when inserting a new tile: starting, finish, and wall tile.
-  There can only be one starting and finish tile in the map.
+  The current mode is also displayed on the bottom of the screen, along with
+  the pathfinding status.
     - Press `1` to insert the starting tile
     - Press `2` to insert the finish tile
     - Press `3` to insert wall
@@ -40,4 +41,5 @@ If everything done successfully, the program window will open
   After pressing the key, you can click anywhere in the map to insert the corresponding tile
 
 - To start the pathfinding process, press `Enter` key
-- After the process is done, you can cleanup the screen by pressing `Enter` again
+- After the process is done, you can cleanup the screen
+  and restart the process by pressing `Enter` again
