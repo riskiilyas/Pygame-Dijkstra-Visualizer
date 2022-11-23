@@ -47,6 +47,7 @@ finish_tile = None
 tile_insert_mode = "WALL"
 status = "READY"
 
+
 def reset_visited_path():
     global grid, start_tile, queue, visited, path
     queue = deque()
@@ -61,6 +62,7 @@ def reset_visited_path():
             tile.visited = False
             if tile.state in (TileState.VISITED, TileState.VISITING, TileState.PATH):
                 tile.state = TileState.EMPTY
+
 
 def init_scenario():
     global grid, queue, visited, path, start_tile, finish_tile
@@ -178,32 +180,32 @@ def main():
                     if event.key == pygame.K_UP:
                         global start_tile
                         start_tile.show(window, TileState.EMPTY)
-                        start_tile = grid[start_tile.x][start_tile.y-1]
+                        start_tile = grid[start_tile.x][start_tile.y - 1]
                         queue.clear()
                         queue.append(start_tile)
                         start_tile.show(window, TileState.START)
-                        
+
                     elif event.key == pygame.K_DOWN:
                         start_tile.show(window, TileState.EMPTY)
                         if start_tile.y < ROWS - 1:
-                            start_tile = grid[start_tile.x][start_tile.y+1]
+                            start_tile = grid[start_tile.x][start_tile.y + 1]
                         else:
                             start_tile = grid[start_tile.x][0]
                         queue.clear()
                         queue.append(start_tile)
                         start_tile.show(window, TileState.START)
-                        
+
                     elif event.key == pygame.K_LEFT:
                         start_tile.show(window, TileState.EMPTY)
-                        start_tile = grid[start_tile.x-1][start_tile.y]
+                        start_tile = grid[start_tile.x - 1][start_tile.y]
                         queue.clear()
                         queue.append(start_tile)
                         start_tile.show(window, TileState.START)
-                        
+
                     elif event.key == pygame.K_RIGHT:
                         start_tile.show(window, TileState.EMPTY)
                         if start_tile.x < COLS - 1:
-                            start_tile = grid[start_tile.x+1][start_tile.y]
+                            start_tile = grid[start_tile.x + 1][start_tile.y]
                         else:
                             start_tile = grid[0][start_tile.y]
                         queue.clear()
@@ -215,31 +217,29 @@ def main():
                     if event.key == pygame.K_UP:
                         global finish_tile
                         finish_tile.show(window, TileState.EMPTY)
-                        finish_tile = grid[finish_tile.x][finish_tile.y-1]
+                        finish_tile = grid[finish_tile.x][finish_tile.y - 1]
                         finish_tile.show(window, TileState.FINISH)
-                        
+
                     elif event.key == pygame.K_DOWN:
                         finish_tile.show(window, TileState.EMPTY)
                         if finish_tile.y < ROWS - 1:
-                            finish_tile = grid[finish_tile.x][finish_tile.y+1]
+                            finish_tile = grid[finish_tile.x][finish_tile.y + 1]
                         else:
                             finish_tile = grid[finish_tile.x][0]
                         finish_tile.show(window, TileState.FINISH)
-                        
+
                     elif event.key == pygame.K_LEFT:
                         finish_tile.show(window, TileState.EMPTY)
-                        finish_tile = grid[finish_tile.x-1][finish_tile.y]
+                        finish_tile = grid[finish_tile.x - 1][finish_tile.y]
                         finish_tile.show(window, TileState.FINISH)
 
                     elif event.key == pygame.K_RIGHT:
                         finish_tile.show(window, TileState.EMPTY)
                         if finish_tile.x < COLS - 1:
-                            finish_tile = grid[finish_tile.x+1][finish_tile.y]
+                            finish_tile = grid[finish_tile.x + 1][finish_tile.y]
                         else:
                             finish_tile = grid[0][finish_tile.y]
                         finish_tile.show(window, TileState.FINISH)
-
-
 
         if startflag:
             start_tile.visited = True
