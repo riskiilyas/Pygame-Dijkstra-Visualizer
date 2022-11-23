@@ -137,10 +137,10 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN and startflag is False:
                 if event.button in (1, 3):
                     click_wall(mouse, event.button == 1, click_mode)
-            elif event.type == pygame.MOUSEMOTION:
+            elif event.type == pygame.MOUSEMOTION and startflag is False:
                 if event.buttons[0] or event.buttons[2]:
                     click_wall(mouse, event.buttons[0], click_mode)
             if event.type == pygame.KEYDOWN:
