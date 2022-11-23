@@ -45,5 +45,6 @@ If everything done successfully, the program window will open
 - After the pathfinding process is done, press `Enter` again
   to restart. This will only erase the path and the visited tile, while
   keeping everything else in the same position
+- Pressing `Enter` when the pathfinding process is still running will stop it
 - To reset everything, press `r`. This will erase every tile and place starting
   and finish tile in their initial place
