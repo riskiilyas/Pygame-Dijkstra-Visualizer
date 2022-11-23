@@ -5,7 +5,7 @@ from utils import hex_to_rgb
 
 class TileState(Enum):
     START = ("#FC6589", "#B92347")
-    END = ("#2BCCFF", "#1099C5")
+    FINISH = ("#2BCCFF", "#1099C5")
     EMPTY = ("#F8F8F8", "#E2E2E2")
     BLOCK = ("#7A7A7A", "#666666")
     VISITED = ("#8ECC5D", "#57A519")
