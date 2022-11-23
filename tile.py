@@ -3,6 +3,7 @@ import pygame
 from enum import Enum
 from utils import hex_to_rgb
 
+
 class TileState(Enum):
     START = ("#FC6589", "#B92347")
     END = ("#2BCCFF", "#1099C5")
