@@ -1,5 +1,7 @@
 # Djikstra's Shortest Path Visualizer
 
+![demo](./readme_assets/demo.png)
+
 ## About
 
 _Quiz 2 project for Design & Analysis Algorithm IUP 2022 where
