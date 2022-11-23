@@ -156,7 +156,7 @@ def main():
                         temp = temp.prev
                     if not flag:
                         flag = True
-                        status = "FOUND :D"
+                        status = "FOUND " + str(len(path)) + " STEPS"
                     finished = True
 
                 if not flag:
@@ -174,7 +174,10 @@ def main():
 
         window.fill(hex_to_rgb("#ffffff"))
 
-        mode_label = font.render("MODE: " + mode, False, hex_to_rgb("#000000"))
+        if finished:
+            mode_label = font.render("Press Enter to Restart", False, hex_to_rgb("#000000"))
+        else:
+            mode_label = font.render("MODE: " + mode, False, hex_to_rgb("#000000"))
         status_label = font.render(status, False, hex_to_rgb("#000000"))
 
         window.blit(mode_label, (10, 490))
