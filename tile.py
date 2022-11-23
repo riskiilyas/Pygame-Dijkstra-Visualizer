@@ -1,15 +1,16 @@
 import pygame
-from enum import Enum
 
+from enum import Enum
+from utils import hex_to_rgb
 
 class TileState(Enum):
-    START = ((252, 101, 137), (185, 35, 71))
-    END = ((43, 204, 255), (16, 153, 197))
-    EMPTY = ((248, 248, 248), (226, 226, 226))
-    BLOCK = ((122, 122, 122), (102, 102, 102))
-    VISITED = ((142, 204, 93), (87, 165, 25))
-    VISITING = ((192, 239, 155), (142, 204, 93))
-    PATH = ((255, 195, 104), (205, 142, 48))
+    START = ("#FC6589", "#B92347")
+    END = ("#2BCCFF", "#1099C5")
+    EMPTY = ("#F8F8F8", "#E2E2E2")
+    BLOCK = ("#7A7A7A", "#666666")
+    VISITED = ("#8ECC5D", "#57A519")
+    VISITING = ("#C0EF9B", "#8ECC5D")
+    PATH = ("#FFC368", "#CD8E30")
 
     def __init__(self, fill, border):
         self.fill = fill
@@ -22,16 +23,17 @@ class Tile:
         self.neighbors = []
         self.prev = None
         self.state = TileState.EMPTY
-        # self.wall = False
-        # self.visited = False
+        self.visited = False
         self.cols = cols
         self.rows = rows
-        self.w = w // cols
-        self.h = h // cols
+        self.w = w
+        self.h = h
 
-    def show(self, window, state):
-        self.state = state
-        pygame.draw.rect(window, self.state.color, (self.x * self.w, self.y * self.h, self.w - 1, self.h - 1))
+    def show(self, window, state=None):
+        if state is not None:
+            self.state = state
+        pygame.draw.rect(window, hex_to_rgb(self.state.fill), (self.x * self.w, self.y * self.h, self.w, self.h))
+        pygame.draw.rect(window, hex_to_rgb(self.state.border), (self.x * self.w, self.y * self.h, self.w, self.h), 1)
 
     def add_neighbors(self, grid):
         if self.x < self.cols - 1:
