@@ -41,5 +41,8 @@ If everything done successfully, the program window will open
   After pressing the key, you can click anywhere in the map to insert the corresponding tile
 
 - To start the pathfinding process, press `Enter` key
-- After the process is done, you can cleanup the screen
-  and restart the process by pressing `Enter` again
+- After the pathfinding process is done, press `Enter` again
+  to restart. This will only erase the path and the visited tile, while
+  keeping everything else in the same position
+- To reset everything, press `r`. This will erase every tile and place starting
+  and finish tile in their initial place
