@@ -29,6 +29,8 @@ If everything done successfully, the program window will open
 
 ## Usage
 
+![usage-demo](./readme_assets/usage_demo.gif)
+
 - There are 3 modes when inserting a new tile: starting, finish, and wall tile.
   There can only be one starting and finish tile in the map.
     - Press `1` to insert the starting tile
