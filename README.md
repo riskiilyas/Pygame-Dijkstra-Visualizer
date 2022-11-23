@@ -1,6 +1,6 @@
 # Djikstra's Shortest Path Visualizer
 
-![demo](./readme_assets/demo.png)
+![preview](./readme_assets/preview.png)
 
 ## About
 
@@ -29,7 +29,7 @@ If everything done successfully, the program window will open
 
 ## Usage
 
-![usage-demo](./readme_assets/usage_demo.gif)
+![demo](./readme_assets/demo.gif)
 
 - There are 3 modes when inserting a new tile: starting, finish, and wall tile.
   The current mode is also displayed on the bottom of the screen, along with
@@ -38,11 +38,13 @@ If everything done successfully, the program window will open
     - Press `2` to insert the finish tile
     - Press `3` to insert wall
 
-  After pressing the key, you can click anywhere in the map to insert the corresponding tile
+  After pressing the key, you can left-click anywhere in the map to insert a new tile
+  and right-click to remove tile
 
 - To start the pathfinding process, press `Enter` key
 - After the pathfinding process is done, press `Enter` again
   to restart. This will only erase the path and the visited tile, while
   keeping everything else in the same position
+- Pressing `Enter` when the pathfinding process is still running will stop it
 - To reset everything, press `r`. This will erase every tile and place starting
   and finish tile in their initial place

@@ -23,7 +23,7 @@ from utils import hex_to_rgb
 
 
 class ModeState(Enum):
-    MODE_BLOCK = 1
+    MODE_WALL = 1
     MODE_START = 2
     MODE_FINISH = 3
 
@@ -42,18 +42,18 @@ font = pygame.font.Font("Pixeltype.ttf", 40)
 grid = []
 queue, visited = deque(), []
 path = []
-start = None
-end = None
-mode = "WALL"
+start_tile = None
+finish_tile = None
+tile_insert_mode = "WALL"
 status = "READY"
 
 def reset_visited_path():
-    global grid, start, queue, visited, path
+    global grid, start_tile, queue, visited, path
     queue = deque()
     visited = []
     path = []
 
-    queue.append(start)
+    queue.append(start_tile)
 
     for i in range(COLS):
         for j in range(ROWS):
@@ -63,7 +63,7 @@ def reset_visited_path():
                 tile.state = TileState.EMPTY
 
 def init_scenario():
-    global grid, queue, visited, path, start, end
+    global grid, queue, visited, path, start_tile, finish_tile
     grid = []
     queue, visited = deque(), []
     path = []
@@ -78,17 +78,17 @@ def init_scenario():
         for j in range(ROWS):
             grid[i][j].add_neighbors(grid)
 
-    start = grid[COLS // 4][ROWS // 2]
-    end = grid[COLS - COLS // 4][ROWS // 2]
-    start.visited = False
-    end.visited = False
-    queue.append(start)
+    start_tile = grid[COLS // 4][ROWS // 2]
+    finish_tile = grid[COLS - COLS // 4][ROWS // 2]
+    start_tile.visited = False
+    finish_tile.visited = False
+    queue.append(start_tile)
 
 
 def click_wall(pos, non_erase_mode, click_mode):
     i = pos[0] // TILE_WIDTH
     j = pos[1] // TILE_HEIGHT
-    global start, end
+    global start_tile, finish_tile
     if not non_erase_mode:
         if i >= 0 and j >= 0 and i < COLS and j < ROWS:
             grid[i][j].show(window, TileState.EMPTY)
@@ -98,7 +98,7 @@ def click_wall(pos, non_erase_mode, click_mode):
                 grid[i][j + 1].show(window, TileState.EMPTY)
             if i + 1 < COLS and j + 1 < ROWS:
                 grid[i + 1][j + 1].show(window, TileState.EMPTY)
-    elif click_mode == ModeState.MODE_BLOCK:
+    elif click_mode == ModeState.MODE_WALL:
         if i >= 0 and j >= 0 and i < COLS and j < ROWS:
             grid[i][j].show(window, TileState.BLOCK)
             if i + 1 < COLS:
@@ -109,16 +109,16 @@ def click_wall(pos, non_erase_mode, click_mode):
                 grid[i + 1][j + 1].show(window, TileState.BLOCK)
     elif click_mode == ModeState.MODE_START:
         if i >= 0 and j >= 0 and i < COLS and j < ROWS:
-            start.show(window, TileState.EMPTY)
-            start = grid[i][j]
+            start_tile.show(window, TileState.EMPTY)
+            start_tile = grid[i][j]
             queue.clear()
-            queue.append(start)
-            start.show(window, TileState.START)
+            queue.append(start_tile)
+            start_tile.show(window, TileState.START)
     elif click_mode == ModeState.MODE_FINISH:
         if i >= 0 and j >= 0 and i < COLS and j < ROWS:
-            end.show(window, TileState.EMPTY)
-            end = grid[i][j]
-            end.show(window, TileState.END)
+            finish_tile.show(window, TileState.EMPTY)
+            finish_tile = grid[i][j]
+            finish_tile.show(window, TileState.FINISH)
 
 
 def main():
@@ -127,8 +127,8 @@ def main():
     startflag = False
     finished = False
     end_path = deque()
-    click_mode = ModeState.MODE_BLOCK
-    global mode, status
+    click_mode = ModeState.MODE_WALL
+    global tile_insert_mode, status
 
     init_scenario()
     while True:
@@ -166,19 +166,86 @@ def main():
                         init_scenario()
                 elif event.key == pygame.K_1:
                     click_mode = ModeState.MODE_START
-                    mode = "START"
+                    tile_insert_mode = "START"
                 elif event.key == pygame.K_2:
                     click_mode = ModeState.MODE_FINISH
-                    mode = "FINISH"
+                    tile_insert_mode = "FINISH"
                 elif event.key == pygame.K_3:
-                    click_mode = ModeState.MODE_BLOCK
-                    mode = "WALL"
+                    click_mode = ModeState.MODE_WALL
+                    tile_insert_mode = "WALL"
+
+                if click_mode == ModeState.MODE_START:
+                    if event.key == pygame.K_UP:
+                        global start_tile
+                        start_tile.show(window, TileState.EMPTY)
+                        start_tile = grid[start_tile.x][start_tile.y-1]
+                        queue.clear()
+                        queue.append(start_tile)
+                        start_tile.show(window, TileState.START)
+                        
+                    elif event.key == pygame.K_DOWN:
+                        start_tile.show(window, TileState.EMPTY)
+                        if start_tile.y < ROWS - 1:
+                            start_tile = grid[start_tile.x][start_tile.y+1]
+                        else:
+                            start_tile = grid[start_tile.x][0]
+                        queue.clear()
+                        queue.append(start_tile)
+                        start_tile.show(window, TileState.START)
+                        
+                    elif event.key == pygame.K_LEFT:
+                        start_tile.show(window, TileState.EMPTY)
+                        start_tile = grid[start_tile.x-1][start_tile.y]
+                        queue.clear()
+                        queue.append(start_tile)
+                        start_tile.show(window, TileState.START)
+                        
+                    elif event.key == pygame.K_RIGHT:
+                        start_tile.show(window, TileState.EMPTY)
+                        if start_tile.x < COLS - 1:
+                            start_tile = grid[start_tile.x+1][start_tile.y]
+                        else:
+                            start_tile = grid[0][start_tile.y]
+                        queue.clear()
+                        queue.append(start_tile)
+                        start_tile.show(window, TileState.START)
+
+
+                elif click_mode == ModeState.MODE_FINISH:
+                    if event.key == pygame.K_UP:
+                        global finish_tile
+                        finish_tile.show(window, TileState.EMPTY)
+                        finish_tile = grid[finish_tile.x][finish_tile.y-1]
+                        finish_tile.show(window, TileState.FINISH)
+                        
+                    elif event.key == pygame.K_DOWN:
+                        finish_tile.show(window, TileState.EMPTY)
+                        if finish_tile.y < ROWS - 1:
+                            finish_tile = grid[finish_tile.x][finish_tile.y+1]
+                        else:
+                            finish_tile = grid[finish_tile.x][0]
+                        finish_tile.show(window, TileState.FINISH)
+                        
+                    elif event.key == pygame.K_LEFT:
+                        finish_tile.show(window, TileState.EMPTY)
+                        finish_tile = grid[finish_tile.x-1][finish_tile.y]
+                        finish_tile.show(window, TileState.FINISH)
+
+                    elif event.key == pygame.K_RIGHT:
+                        finish_tile.show(window, TileState.EMPTY)
+                        if finish_tile.x < COLS - 1:
+                            finish_tile = grid[finish_tile.x+1][finish_tile.y]
+                        else:
+                            finish_tile = grid[0][finish_tile.y]
+                        finish_tile.show(window, TileState.FINISH)
+
+
 
         if startflag:
-            start.visited = True
+            start_tile.visited = True
             if len(queue) > 0:
                 current = queue.popleft()
-                if current == end:
+                if current == finish_tile:
                     temp = current
                     while temp.prev:
                         path.append(temp.prev)
@@ -206,7 +273,7 @@ def main():
         if finished:
             mode_label = font.render("PRESS ENTER TO RESTART", False, hex_to_rgb("#000000"))
         else:
-            mode_label = font.render("MODE: " + mode, False, hex_to_rgb("#000000"))
+            mode_label = font.render("MODE: " + tile_insert_mode, False, hex_to_rgb("#000000"))
         status_label = font.render(status, False, hex_to_rgb("#000000"))
 
         window.blit(mode_label, (10, 490))
@@ -219,10 +286,10 @@ def main():
                     spot.show(window, TileState.VISITED)
                 if spot in queue and not flag:
                     spot.show(window, TileState.VISITING)
-                if spot == start:
+                if spot == start_tile:
                     spot.show(window, TileState.START)
-                if spot == end:
-                    spot.show(window, TileState.END)
+                if spot == finish_tile:
+                    spot.show(window, TileState.FINISH)
 
         if finished:
             if len(path) > 0:
