@@ -1,6 +1,8 @@
 # Djikstra's Shortest Path Visualizer
 
-![preview](./readme_assets/preview.png)
+<p align="center">
+   <img width="640" alt="preview" src="./readme_assets/preview.png">
+</p>
 
 ## About
 
@@ -32,7 +34,9 @@ If everything done successfully, the program window will open
 
 ## Usage
 
-![demo](./readme_assets/demo.gif)
+<p align="center">
+   <img width="640" alt="demo" src="./readme_assets/demo.gif">
+</p>
 
 - There are 3 modes when inserting a new tile: starting, finish, and wall tile.
   The current mode is also displayed on the bottom of the screen, along with
