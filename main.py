@@ -94,21 +94,9 @@ def click_wall(pos, non_erase_mode, click_mode):
     if not non_erase_mode:
         if i >= 0 and j >= 0 and i < COLS and j < ROWS:
             grid[i][j].show(window, TileState.EMPTY)
-            if i + 1 < COLS:
-                grid[i + 1][j].show(window, TileState.EMPTY)
-            if j + 1 < ROWS:
-                grid[i][j + 1].show(window, TileState.EMPTY)
-            if i + 1 < COLS and j + 1 < ROWS:
-                grid[i + 1][j + 1].show(window, TileState.EMPTY)
     elif click_mode == ModeState.MODE_WALL:
         if i >= 0 and j >= 0 and i < COLS and j < ROWS:
             grid[i][j].show(window, TileState.BLOCK)
-            if i + 1 < COLS:
-                grid[i + 1][j].show(window, TileState.BLOCK)
-            if j + 1 < ROWS:
-                grid[i][j + 1].show(window, TileState.BLOCK)
-            if i + 1 < COLS and j + 1 < ROWS:
-                grid[i + 1][j + 1].show(window, TileState.BLOCK)
     elif click_mode == ModeState.MODE_START:
         if i >= 0 and j >= 0 and i < COLS and j < ROWS:
             start_tile.show(window, TileState.EMPTY)
@@ -257,10 +245,31 @@ def main():
 
                 if not flag:
                     for i in current.neighbors:
-                        if not i.visited and not i.state == TileState.BLOCK:
-                            i.visited = True
-                            i.prev = current
-                            queue.append(i)
+                        if not (i.visited or i.state == TileState.BLOCK):
+                            if i.x == current.x+1 and i.y == current.y-1:
+                                if not (grid[current.x+1][current.y].state == TileState.BLOCK and grid[current.x][current.y-1].state == TileState.BLOCK):
+                                    i.visited = True
+                                    i.prev = current
+                                    queue.append(i)
+                            elif i.x == current.x-1 and i.y == current.y-1:
+                                if not (grid[i.x][current.y].state == TileState.BLOCK and grid[current.x][i.y].state == TileState.BLOCK):
+                                    i.visited = True
+                                    i.prev = current
+                                    queue.append(i)
+                            elif i.x == current.x-1 and i.y == current.y+1:
+                                if not (grid[current.x-1][current.y].state == TileState.BLOCK and grid[current.x][current.y+1].state == TileState.BLOCK):
+                                    i.visited = True
+                                    i.prev = current
+                                    queue.append(i)
+                            elif i.x == current.x+1 and i.y == current.y+1:
+                                if not (grid[current.x+1][current.y].state == TileState.BLOCK and grid[current.x][current.y+1].state == TileState.BLOCK):
+                                    i.visited = True
+                                    i.prev = current
+                                    queue.append(i)
+                            else:
+                                i.visited = True
+                                i.prev = current
+                                queue.append(i)
             else:
                 if noflag and not flag:
                     noflag = False
