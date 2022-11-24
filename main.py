@@ -7,8 +7,8 @@ Design & Analysis of Algorithm (IUP)
 Lecturer: Misbakhul Munir Irfan Subakti, S.Kom., M.Sc.
 
 Group Member
-- Muhammad Ghifari Taqiuddin (5025211063)
 - Mikhael Aryasatya Nugraha (5025211062)
+- Muhammad Ghifari Taqiuddin (5025211063)
 - Riski Ilyas (5025211189)
 
 """
